@@ -11,7 +11,7 @@ fn main() -> Result<()> {
     const IMAGEHEIGHT: u32 = 256;
     // render
     let first_line = format!("P3\n{IMAGEWIDTH} {IMAGEHEIGHT}\n255\n");
-    let filepath = Path::new("./example2.ppm");
+    let filepath = Path::new("./img/example.ppm");
     let mut file = File::create(filepath)?;
     file.write_all(first_line.as_bytes())?;
     for j in 0..IMAGEHEIGHT {
