@@ -140,6 +140,7 @@ impl std::ops::Div<f64> for Vec3 {
         self * (1.0 / t)
     }
 }
+pub type Point3 = Vec3;
 
 pub type Color = Vec3;
 
@@ -149,6 +150,11 @@ pub fn write_color(out: &mut impl Write, color: &Color) -> std::io::Result<()> {
     let ib = (255.999 * color.z) as i32;
     writeln!(out, "{} {} {}", ir, ig, ib)?;
     Ok(())
+}
+
+struct Ray {
+    orig: Point3,
+    dir: Vec3,
 }
 
 // tests
