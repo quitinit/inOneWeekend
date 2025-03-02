@@ -1,20 +1,22 @@
-struct Vec3 {
+use std::io::Write;
+
+pub struct Vec3 {
     x: f64,
     y: f64,
     z: f64,
 }
 
 impl Vec3 {
-    fn new(x: f64, y: f64, z: f64) -> Vec3 {
+    pub fn new(x: f64, y: f64, z: f64) -> Vec3 {
         Vec3 { x, y, z }
     }
-    fn length(&self) -> f64 {
+    pub fn length(&self) -> f64 {
         (self.x * self.x + self.y * self.y + self.z * self.z).sqrt()
     }
-    fn length_squared(&self) -> f64 {
+    pub fn length_squared(&self) -> f64 {
         self.x * self.x + self.y * self.y + self.z * self.z
     }
-    fn unit_vector(&self) -> Vec3 {
+    pub fn unit_vector(&self) -> Vec3 {
         let k = 1.0 / self.length();
         Vec3 {
             x: self.x * k,
@@ -22,11 +24,11 @@ impl Vec3 {
             z: self.z * k,
         }
     }
-    fn dot(u: &Vec3, v: &Vec3) -> f64 {
+    pub fn dot(u: &Vec3, v: &Vec3) -> f64 {
         u.x * v.x + u.y * v.y + u.z * v.z
     }
 
-    fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
+    pub fn cross(u: &Vec3, v: &Vec3) -> Vec3 {
         Vec3 {
             x: u.y * v.z - u.z * v.y,
             y: u.z * v.x - u.x * v.z,
@@ -137,6 +139,16 @@ impl std::ops::Div<f64> for Vec3 {
     fn div(self, t: f64) -> Vec3 {
         self * (1.0 / t)
     }
+}
+
+pub type Color = Vec3;
+
+pub fn write_color(out: &mut impl Write, color: &Color) -> std::io::Result<()> {
+    let ir = (255.999 * color.x) as i32;
+    let ig = (255.999 * color.y) as i32;
+    let ib = (255.999 * color.z) as i32;
+    writeln!(out, "{} {} {}", ir, ig, ib)?;
+    Ok(())
 }
 
 // tests
