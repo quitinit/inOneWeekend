@@ -1,5 +1,5 @@
 use std::io::Write;
-
+#[derive(PartialEq, Debug, Clone)]
 pub struct Vec3 {
     x: f64,
     y: f64,
@@ -157,10 +157,61 @@ struct Ray {
     dir: Vec3,
 }
 
-// tests
+impl Ray {
+    pub fn origin(&self) -> &Point3 {
+        &self.orig
+    }
+
+    pub fn direction(&self) -> &Vec3 {
+        &self.dir
+    }
+
+    pub fn at(&self, t: f64) -> Point3 {
+        // this is most likely inefficient but better than taking ownership of the Ray
+        self.orig.clone() + self.dir.clone() * t
+    }
+}
 #[cfg(test)]
 mod tests {
+
     use super::*;
+
+    #[test]
+    fn test_ray_origin() {
+        let origin = Point3::new(1.0, 2.0, 3.0);
+        let origin_compare = origin.clone();
+        let direction = Vec3::new(4.0, 5.0, 6.0);
+        let ray = Ray {
+            orig: origin,
+            dir: direction,
+        };
+        assert_eq!(ray.origin(), &origin_compare);
+    }
+
+    #[test]
+    fn test_ray_direction() {
+        let origin = Point3::new(1.0, 2.0, 3.0);
+        let direction = Vec3::new(4.0, 5.0, 6.0);
+        let direction_compare = direction.clone();
+        let ray = Ray {
+            orig: origin,
+            dir: direction,
+        };
+        assert_eq!(ray.direction(), &direction_compare);
+    }
+
+    #[test]
+    fn test_ray_at() {
+        let origin = Point3::new(1.0, 2.0, 3.0);
+        let direction = Vec3::new(4.0, 5.0, 6.0);
+        let ray = Ray {
+            orig: origin,
+            dir: direction,
+        };
+        let t = 2.0;
+        let point = ray.at(t);
+        assert_eq!(point, Point3::new(9.0, 12.0, 15.0));
+    }
 
     #[test]
     fn test_vec3_new() {
